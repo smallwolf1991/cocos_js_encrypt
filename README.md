@@ -1,5 +1,5 @@
 ### 方法一
-···
+        
 //D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCImage.h
 //initWithImageFile 上面加入下面代码
 //引用头文件 
@@ -50,11 +50,9 @@ bool Image::initWithImageFile(const std::string& path)
 
     return ret;
 }
-···
-
+    
 ### 方法二
-···
-
+    
 在D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCFileUtils.cpp文件加入下面代码
 
 #include "external\sources\xxtea\xxtea.h" // 需要引用头文件
@@ -95,4 +93,4 @@ FileUtils::getInstance()->Data_Decrypt(&data);
 这就实现图片的解密。
 
 然后可以在D:\CocosCreator\resources\cocos2d-x\cocos\scripting\js-bindings\manual\jsb_global.cpp中onGetDataFromFile和onGetStringFromFile修改代码实现js脚本的解密，这样就可以把cocos自带的js也实现加密
-···
+    
