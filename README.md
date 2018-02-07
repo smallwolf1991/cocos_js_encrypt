@@ -1,89 +1,89 @@
 ### 方法一
         
-//D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCImage.h
-//initWithImageFile 上面加入下面代码
-//引用头文件 
-#include "base/CCData.h"
-void Image_Decrypt(Data * data);
+D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCImage.h
+initWithImageFile 上面加入下面代码
+引用头文件 
+    #include "base/CCData.h"
+    void Image_Decrypt(Data * data);
 
-//D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCImage.cpp
-//initWithImageFile 上面加入下面代码
+D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCImage.cpp
+initWithImageFile 上面加入下面代码
     
-//引用头文件 
-#include "external\sources\xxtea\xxtea.h"
+    //引用头文件 
+    #include "external\sources\xxtea\xxtea.h"
 
-#define DECRYPT_SIGN "sw"
-#define DECRYPT_KEY "aaaaaa"
+    #define DECRYPT_SIGN "sw"
+    #define DECRYPT_KEY "aaaaaa"
 
-void Image::Image_Decrypt(Data *data)
-{
-	const char* key = DECRYPT_KEY;
-	const char* sign = DECRYPT_SIGN;
-	unsigned char* dataBytes = data->getBytes();
-	ssize_t dataLen = data->getSize();
-	ssize_t signLen = strlen(sign);
-	ssize_t keyLen = strlen(key);
-
-	if (strncmp(sign, (const char*)dataBytes, signLen) != 0)
-	{
-		return;
-	}
-
-	xxtea_long retLen = 0;
-	unsigned char* retData = xxtea_decrypt(dataBytes + signLen, dataLen - signLen, (unsigned char*)key, keyLen, &retLen);
-	data->fastSet(retData, retLen);
-}
-
-bool Image::initWithImageFile(const std::string& path)
-{
-    bool ret = false;
-    _filePath = FileUtils::getInstance()->fullPathForFilename(path);
-
-    Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
-
-    if (!data.isNull())
-    {           
-		//关闭文件
-		Image_Decrypt(&data);
-        ret = initWithImageData(data.getBytes(), data.getSize());
+    void Image::Image_Decrypt(Data *data)
+    {
+    	const char* key = DECRYPT_KEY;
+    	const char* sign = DECRYPT_SIGN;
+    	unsigned char* dataBytes = data->getBytes();
+    	ssize_t dataLen = data->getSize();
+    	ssize_t signLen = strlen(sign);
+    	ssize_t keyLen = strlen(key);
+    
+    	if (strncmp(sign, (const char*)dataBytes, signLen) != 0)
+    	{
+    		return;
+    	}
+    
+    	xxtea_long retLen = 0;
+    	unsigned char* retData = xxtea_decrypt(dataBytes + signLen, dataLen - signLen, (unsigned char*)key, keyLen, &retLen);
+    	data->fastSet(retData, retLen);
     }
 
-    return ret;
-}
+    bool Image::initWithImageFile(const std::string& path)
+    {
+        bool ret = false;
+        _filePath = FileUtils::getInstance()->fullPathForFilename(path);
+    
+        Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
+    
+        if (!data.isNull())
+        {           
+    		//关闭文件
+    		Image_Decrypt(&data);
+            ret = initWithImageData(data.getBytes(), data.getSize());
+        }
+    
+        return ret;
+    }
 
 ### 方法二
     
 在D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCFileUtils.cpp文件加入下面代码
 
-#include "external\sources\xxtea\xxtea.h" // 需要引用头文件
+    #include "external\sources\xxtea\xxtea.h" // 需要引用头文件
     
-bool FileUtils::Data_Decrypt(Data *data) // 放到FileUtils的类中
-{
-	const char* key = DECRYPT_KEY;
-	const char* sign = DECRYPT_SIGN;
-	unsigned char* dataBytes = data->getBytes();
-	ssize_t dataLen = data->getSize();
-	ssize_t signLen = strlen(sign);
-	ssize_t keyLen = strlen(key);
-
-	if (strncmp(sign, (const char*)dataBytes, signLen) != 0)
-	{
-		return false;
-	}
-
-	xxtea_long retLen = 0;
-	unsigned char* retData = xxtea_decrypt(dataBytes + signLen, dataLen - signLen, (unsigned char*)key, keyLen, &retLen);
-	data->fastSet(retData, retLen);
-	return true;
-}
+    bool FileUtils::Data_Decrypt(Data *data) // 放到FileUtils的类中
+    {
+    	const char* key = DECRYPT_KEY;
+    	const char* sign = DECRYPT_SIGN;
+    	unsigned char* dataBytes = data->getBytes();
+    	ssize_t dataLen = data->getSize();
+    	ssize_t signLen = strlen(sign);
+    	ssize_t keyLen = strlen(key);
     
+    	if (strncmp(sign, (const char*)dataBytes, signLen) != 0)
+    	{
+    		return false;
+    	}
+    
+    	xxtea_long retLen = 0;
+    	unsigned char* retData = xxtea_decrypt(dataBytes + signLen, dataLen - signLen, (unsigned char*)key, keyLen, &retLen);
+    	data->fastSet(retData, retLen);
+    	return true;
+    }
+        
 在D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCFileUtils.h加入声明，并添加预定义
+        
+    #define DECRYPT_SIGN "BGtISRNh8wEX5sRp"
+    #define DECRYPT_KEY "U4I5yavAEq12Na4qtgDt"
+        
     
-#define DECRYPT_SIGN "BGtISRNh8wEX5sRp"
-#define DECRYPT_KEY "U4I5yavAEq12Na4qtgDt"
-    
-
-bool FileUtils::Data_Decrypt(Data *data);// 这个需要加到FileUtils类的公共方法区域
+    bool FileUtils::Data_Decrypt(Data *data);// 这个需要加到FileUtils类的公共方法区域
 
 
 
