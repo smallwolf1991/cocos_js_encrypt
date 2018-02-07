@@ -8,7 +8,7 @@ void Image_Decrypt(Data * data);
 
 //D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCImage.cpp
 //initWithImageFile 上面加入下面代码
-
+    
 //引用头文件 
 #include "external\sources\xxtea\xxtea.h"
 
@@ -33,7 +33,7 @@ void Image::Image_Decrypt(Data *data)
 	unsigned char* retData = xxtea_decrypt(dataBytes + signLen, dataLen - signLen, (unsigned char*)key, keyLen, &retLen);
 	data->fastSet(retData, retLen);
 }
-
+    
 bool Image::initWithImageFile(const std::string& path)
 {
     bool ret = false;
@@ -56,7 +56,7 @@ bool Image::initWithImageFile(const std::string& path)
 在D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCFileUtils.cpp文件加入下面代码
 
 #include "external\sources\xxtea\xxtea.h" // 需要引用头文件
-
+    
 bool FileUtils::Data_Decrypt(Data *data) // 放到FileUtils的类中
 {
 	const char* key = DECRYPT_KEY;
@@ -76,11 +76,12 @@ bool FileUtils::Data_Decrypt(Data *data) // 放到FileUtils的类中
 	data->fastSet(retData, retLen);
 	return true;
 }
+    
 在D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCFileUtils.h加入声明，并添加预定义
-
+    
 #define DECRYPT_SIGN "BGtISRNh8wEX5sRp"
 #define DECRYPT_KEY "U4I5yavAEq12Na4qtgDt"
-
+    
 
 bool FileUtils::Data_Decrypt(Data *data);// 这个需要加到FileUtils类的公共方法区域
 
