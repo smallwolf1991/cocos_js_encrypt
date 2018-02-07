@@ -1,4 +1,4 @@
-##-------------------------------------方法一----------------------------------------
+## 方法一
 //D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCImage.h
 //initWithImageFile 上面加入下面代码
 //引用头文件 
@@ -50,7 +50,7 @@ bool Image::initWithImageFile(const std::string& path)
     return ret;
 }
 
-###----------------------------------方法二--------------------------------
+## 方法二
 
 在D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCFileUtils.cpp文件加入下面代码
 
