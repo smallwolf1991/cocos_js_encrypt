@@ -33,7 +33,7 @@ void Image::Image_Decrypt(Data *data)
 	unsigned char* retData = xxtea_decrypt(dataBytes + signLen, dataLen - signLen, (unsigned char*)key, keyLen, &retLen);
 	data->fastSet(retData, retLen);
 }
-    
+
 bool Image::initWithImageFile(const std::string& path)
 {
     bool ret = false;
@@ -50,7 +50,7 @@ bool Image::initWithImageFile(const std::string& path)
 
     return ret;
 }
-    
+
 ### 方法二
     
 在D:\CocosCreator\resources\cocos2d-x\cocos\platform\CCFileUtils.cpp文件加入下面代码
