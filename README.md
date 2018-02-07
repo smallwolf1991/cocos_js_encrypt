@@ -89,7 +89,7 @@ initWithImageFile 上面加入下面代码
 
 解密的方法已经好了，下面需要在方法一种的initWithImageFile中的相同位置加入类似代码，注意区别（步骤一的其他操作都不需要，只需要加入下面代码）：
 
-FileUtils::getInstance()->Data_Decrypt(&data);
+    FileUtils::getInstance()->Data_Decrypt(&data);
 
 这就实现图片的解密。
 
